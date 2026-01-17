@@ -1,140 +1,629 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>YXL 갠방 시그 목록</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 0 16px;
-      line-height: 1.5;
+    :root{
+      --bg1:#f6f7fb;
+      --bg2:#eef1f7;
+      --card:#ffffff;
+      --line:#e6e8ef;
+      --text:#141823;
+      --muted:#5a6475;
+      --accent:#111827;
+      --accent2:#6b7280;
+      --shadow: 0 14px 40px rgba(15, 23, 42, 0.10);
+      --radius: 18px;
     }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 16px;
+
+    * { box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Pretendard, "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% -10%, var(--bg2), transparent 60%),
+                  radial-gradient(900px 500px at 110% 10%, #f1f5ff, transparent 55%),
+                  linear-gradient(180deg, var(--bg1), #ffffff);
+      padding: 48px 16px;
     }
-    .search-box {
-      margin-bottom: 16px;
+
+    .wrap{
+      max-width: 860px;
+      margin: 0 auto;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 8px 10px;
-      font-size: 14px;
-      box-sizing: border-box;
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 14px;
+
+    .header{
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 12px;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 6px 8px;
-      text-align: left;
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 14px;
     }
-    th {
-      background: #f5f5f5;
+
+    .brand img{
+      width: 120px;
+      height: auto;
+      display:block;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
     }
-    tfoot {
-      margin-top: 8px;
+
+    h1{
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+      color: var(--accent);
+      line-height: 1.25;
+    }
+
+    .sub{
+      margin: 0;
       font-size: 13px;
+      color: var(--muted);
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .search{
+      position: relative;
+    }
+
+    .search input{
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      outline: none;
+      font-size: 14px;
+      color: var(--text);
+      background: #fbfcff;
+      transition: 0.15s ease;
+    }
+
+    .search input:focus{
+      border-color: rgba(17, 24, 39, 0.35);
+      box-shadow: 0 0 0 5px rgba(17, 24, 39, 0.06);
+      background: #fff;
+    }
+
+    .search svg{
+      position:absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--accent2);
+      pointer-events:none;
+    }
+
+    .content{
+      padding: 18px 22px 22px;
+      display:grid;
+      gap: 12px;
+    }
+
+    .meta{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ===== 스크롤 영역 ===== */
+    .table-wrap{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-scroll{
+      max-height: 520px;       /* 여기 숫자만 바꾸면 스크롤 높이 조절됩니다 */
+      overflow: auto;
+    }
+
+    table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 14px;
+    }
+
+    thead th{
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: linear-gradient(180deg, #f8fafc, #f3f4f6);
+      color: #111827;
+      text-align: left;
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    tbody td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      background: #fff;
+    }
+
+    tbody tr:nth-child(even) td{
+      background: #fbfcff;
+    }
+
+    tbody tr:hover td{
+      background: #f5f7ff;
+    }
+
+    td.num{
+      width: 120px;
+      color: #111827;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .footer{
+      padding: 14px 22px;
+      border-top: 1px solid var(--line);
+      background: #fcfdff;
+      color: var(--muted);
+      font-size: 12.5px;
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid var(--line);
+      color: #111827;
+      font-size: 12.5px;
+    }
+
+    /* 스크롤바(지원되는 브라우저에서만) */
+    .table-scroll::-webkit-scrollbar{ width: 10px; height: 10px; }
+    .table-scroll::-webkit-scrollbar-thumb{
+      background: rgba(17, 24, 39, 0.18);
+      border-radius: 999px;
+      border: 2px solid #fff;
+    }
+    .table-scroll::-webkit-scrollbar-track{ background: #fff; }
+
+    @media (max-width: 520px){
+      .brand{ gap: 10px; }
+      .brand img{ width: 96px; }
+      td.num{ width: 96px; }
+      .table-scroll{ max-height: 460px; }
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <div class="brand">
+          <img src="https://yxl.kr/files/attach/images/31683/8802704fb3d00b6772684f6eb7f8ef71.webp" alt="사이트 로고" />
+          <div>
+            <h1>YXL 갠방 시그 목록</h1>
+            <p class="sub">번호 또는 제목으로 검색할 수 있습니다.</p>
+          </div>
+        </div>
 
-  <!-- 사이트 로고 위치 (이미지 쓰고 싶으면 여기에 <img> 추가) -->
-  <!-- <img src="로고이미지주소" alt="사이트 로고"> -->
+        <div class="toolbar">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M16.2 16.2 21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="번호 또는 제목으로 검색 (예: 161 또는 Overdrive)"
+              aria-label="번호 또는 제목으로 검색"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
 
-  <h1>YXL 갠방 시그 목록</h1>
+      <div class="content">
+        <div class="meta">
+          <span id="countText" class="badge">총 0개의 곡</span>
+          <span>Tip: 숫자 일부(예: 10) 또는 제목 일부로도 검색됩니다.</span>
+        </div>
 
-  <div class="search-box">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="번호 또는 제목으로 검색 (예: 280, 계엄령)"
-      aria-label="번호 또는 제목으로 검색"
-    >
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table id="songTable">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 기존 데이터 그대로 유지 -->
+                <tr><td class="num">100</td><td>IwantYou</td></tr>
+                <tr><td class="num">101</td><td>사인</td></tr>
+                <tr><td class="num">102</td><td>Whistle</td></tr>
+                <tr><td class="num">103</td><td>호시탐탐</td></tr>
+                <tr><td class="num">104</td><td>무아</td></tr>
+                <tr><td class="num">105</td><td>벌룬인럽</td></tr>
+                <tr><td class="num">106</td><td>라이크유</td></tr>
+                <tr><td class="num">107</td><td>메가피스하모니</td></tr>
+                <tr><td class="num">108</td><td>색소폰매직</td></tr>
+                <tr><td class="num">109</td><td>earthquake</td></tr>
+                <tr><td class="num">110</td><td>치킨바나나</td></tr>
+                <tr><td class="num">111</td><td>와꾸춤</td></tr>
+                <tr><td class="num">112</td><td>모찌</td></tr>
+                <tr><td class="num">113</td><td>사랑받을준비완료</td></tr>
+                <tr><td class="num">114</td><td>슈퍼그럼요</td></tr>
+                <tr><td class="num">117</td><td>귀엽따</td></tr>
+                <tr><td class="num">118</td><td>그래비티</td></tr>
+                <tr><td class="num">119</td><td>쿵쿵따</td></tr>
+                <tr><td class="num">120</td><td>왜요왜요</td></tr>
+                <tr><td class="num">121</td><td>푸른산호초</td></tr>
+                <tr><td class="num">122</td><td>진압해</td></tr>
+                <tr><td class="num">123</td><td>아로아로</td></tr>
+                <tr><td class="num">124</td><td>틱탁</td></tr>
+                <tr><td class="num">125</td><td>짠쿵쾅</td></tr>
+                <tr><td class="num">126</td><td>매니악</td></tr>
+                <tr><td class="num">127</td><td>첫번째레슨</td></tr>
+                <tr><td class="num">128</td><td>러브쉐이크</td></tr>
+                <tr><td class="num">129</td><td>버터플라이</td></tr>
+                <tr><td class="num">130</td><td>네모네모</td></tr>
+                <tr><td class="num">131</td><td>A</td></tr>
+                <tr><td class="num">132</td><td>애티튜드</td></tr>
+                <tr><td class="num">133</td><td>홀드업</td></tr>
+                <tr><td class="num">134</td><td>오늘만iloveyou</td></tr>
+                <tr><td class="num">135</td><td>바니바니</td></tr>
+                <tr><td class="num">136</td><td>BassDownLow</td></tr>
+                <tr><td class="num">137</td><td>이안챌린지</td></tr>
+                <tr><td class="num">138</td><td>MEOW</td></tr>
+                <tr><td class="num">140</td><td>소다팝</td></tr>
+                <tr><td class="num">141</td><td>HOT</td></tr>
+                <tr><td class="num">142</td><td>카리나닮았대</td></tr>
+                <tr><td class="num">143</td><td>키딩</td></tr>
+                <tr><td class="num">144</td><td>킥드럼베이스</td></tr>
+                <tr><td class="num">145</td><td>Body</td></tr>
+                <tr><td class="num">146</td><td>펌업더볼륨</td></tr>
+                <tr><td class="num">147</td><td>단발머리</td></tr>
+                <tr><td class="num">148</td><td>나랑사귈래</td></tr>
+                <tr><td class="num">149</td><td>토니토니쵸파</td></tr>
+                <tr><td class="num">151</td><td>스트로베리러쉬</td></tr>
+                <tr><td class="num">152</td><td>예삐예삐</td></tr>
+                <tr><td class="num">153</td><td>Spaghetti</td></tr>
+                <tr><td class="num">154</td><td>자기야화풀어</td></tr>
+                <tr><td class="num">155</td><td>솜사탕</td></tr>
+                <tr><td class="num">156</td><td>The chase</td></tr>
+                <tr><td class="num">157</td><td>DirtyWork</td></tr>
+                <tr><td class="num">158</td><td>내가S면넌 나의N이되어줘</td></tr>
+                <tr><td class="num">159</td><td>쩔어</td></tr>
+                <tr><td class="num">161</td><td>Overdrive</td></tr>
+                <tr><td class="num">162</td><td>아이스크림</td></tr>
+                <tr><td class="num">163</td><td>외모체크</td></tr>
+                <tr><td class="num">164</td><td>뛰어</td></tr>
+                <tr><td class="num">165</td><td>One more time</td></tr>
+                <tr><td class="num">166</td><td>두번째지구</td></tr>
+                <tr><td class="num">167</td><td>여름이었다</td></tr>
+                <tr><td class="num">176</td><td>리치맨</td></tr>
+                <tr><td class="num">177</td><td>캔디</td></tr>
+                <tr><td class="num">180</td><td>푱푱</td></tr>
+                <tr><td class="num">181</td><td>Swing</td></tr>
+                <tr><td class="num">184</td><td>SexyFood</td></tr>
+                <tr><td class="num">185</td><td>왠지</td></tr>
+                <tr><td class="num">187</td><td>하트하트</td></tr>
+                <tr><td class="num">189</td><td>새끈빠끈</td></tr>
+                <tr><td class="num">191</td><td>핑크레이디</td></tr>
+                <tr><td class="num">192</td><td>쵸파등장</td></tr>
+                <tr><td class="num">195</td><td>핫해</td></tr>
+                <tr><td class="num">199</td><td>나루토</td></tr>
+                <tr><td class="num">200</td><td>LOVE</td></tr>
+                <tr><td class="num">201</td><td>슈파두파</td></tr>
+                <tr><td class="num">202</td><td>팬서비스</td></tr>
+                <tr><td class="num">203</td><td>하얀그리움</td></tr>
+                <tr><td class="num">205</td><td>모시모시</td></tr>
+                <tr><td class="num">206</td><td>치얼업</td></tr>
+                <tr><td class="num">207</td><td>고민중독</td></tr>
+                <tr><td class="num">208</td><td>테디베어</td></tr>
+                <tr><td class="num">209</td><td>라라라</td></tr>
+                <tr><td class="num">210</td><td>우치다</td></tr>
+                <tr><td class="num">211</td><td>코카인</td></tr>
+                <tr><td class="num">217</td><td>셔플</td></tr>
+                <tr><td class="num">220</td><td>배기진스</td></tr>
+                <tr><td class="num">222</td><td>위플래쉬</td></tr>
+                <tr><td class="num">224</td><td>빛을따라서</td></tr>
+                <tr><td class="num">226</td><td>candythief</td></tr>
+                <tr><td class="num">228</td><td>너뿐이야</td></tr>
+                <tr><td class="num">233</td><td>투배드</td></tr>
+                <tr><td class="num">241</td><td>다섯번째계절</td></tr>
+                <tr><td class="num">242</td><td>우유</td></tr>
+                <tr><td class="num">244</td><td>레벨하트</td></tr>
+                <tr><td class="num">246</td><td>likejennie</td></tr>
+                <tr><td class="num">247</td><td>슈퍼소닉</td></tr>
+                <tr><td class="num">248</td><td>귀여워서미안해</td></tr>
+                <tr><td class="num">250</td><td>마그네틱</td></tr>
+                <tr><td class="num">255</td><td>나래응원가</td></tr>
+                <tr><td class="num">258</td><td>오빠바이러스</td></tr>
+                <tr><td class="num">262</td><td>간바레센빠이</td></tr>
+                <tr><td class="num">263</td><td>WICKED</td></tr>
+                <tr><td class="num">264</td><td>아헤가오</td></tr>
+                <tr><td class="num">268</td><td>키세스</td></tr>
+                <tr><td class="num">269</td><td>센세</td></tr>
+                <tr><td class="num">272</td><td>하랑응원가</td></tr>
+                <tr><td class="num">273</td><td>서니응원가</td></tr>
+                <tr><td class="num">277</td><td>롤러코스터</td></tr>
+                <tr><td class="num">283</td><td>D지는거야</td></tr>
+                <tr><td class="num">284</td><td>소다응원가</td></tr>
+                <tr><td class="num">285</td><td>리윤응원가</td></tr>
+                <tr><td class="num">286</td><td>유나연응원가</td></tr>
+                <tr><td class="num">287</td><td>후잉응원가</td></tr>
+                <tr><td class="num">289</td><td>나빌레라</td></tr>
+                <tr><td class="num">295</td><td>사쿠란보</td></tr>
+                <tr><td class="num">299</td><td>패스트카</td></tr>
+                <tr><td class="num">300</td><td>한마디</td></tr>
+                <tr><td class="num">301</td><td>LSD</td></tr>
+                <tr><td class="num">303</td><td>UP</td></tr>
+                <tr><td class="num">305</td><td>보성UP</td></tr>
+                <tr><td class="num">309</td><td>야메떼구다사이</td></tr>
+                <tr><td class="num">310</td><td>첫만남</td></tr>
+                <tr><td class="num">311</td><td>날라리</td></tr>
+                <tr><td class="num">313</td><td>너와의모든지금</td></tr>
+                <tr><td class="num">323</td><td>다이스키</td></tr>
+                <tr><td class="num">333</td><td>제로투</td></tr>
+                <tr><td class="num">344</td><td>Good bye</td></tr>
+                <tr><td class="num">353</td><td>인더클럽</td></tr>
+                <tr><td class="num">355</td><td>나래신호탄</td></tr>
+                <tr><td class="num">356</td><td>유정응원가</td></tr>
+                <tr><td class="num">366</td><td>언니귀여워</td></tr>
+                <tr><td class="num">374</td><td>오빠달려붕붕</td></tr>
+                <tr><td class="num">377</td><td>잭슨</td></tr>
+                <tr><td class="num">387</td><td>헨타이</td></tr>
+                <tr><td class="num">395</td><td>염글게염글게</td></tr>
+                <tr><td class="num">400</td><td>앙카</td></tr>
+                <tr><td class="num">413</td><td>slap</td></tr>
+                <tr><td class="num">433</td><td>바닥드라군</td></tr>
+                <tr><td class="num">444</td><td>터미널</td></tr>
+                <tr><td class="num">455</td><td>EDM</td></tr>
+                <tr><td class="num">464</td><td>바우치</td></tr>
+                <tr><td class="num">475</td><td>몸</td></tr>
+                <tr><td class="num">477</td><td>방망이드라군</td></tr>
+                <tr><td class="num">488</td><td>홈스윗홈</td></tr>
+                <tr><td class="num">500</td><td>댄스댄스</td></tr>
+                <tr><td class="num">502</td><td>서니신호탄</td></tr>
+                <tr><td class="num">522</td><td>더하이스트</td></tr>
+                <tr><td class="num">533</td><td>IT's That Time</td></tr>
+                <tr><td class="num">544</td><td>HMG</td></tr>
+                <tr><td class="num">545</td><td>사후르</td></tr>
+                <tr><td class="num">546</td><td>율무신호탄</td></tr>
+                <tr><td class="num">550</td><td>호미들</td></tr>
+                <tr><td class="num">552</td><td>후잉신호탄</td></tr>
+                <tr><td class="num">554</td><td>소다신호탄</td></tr>
+                <tr><td class="num">555</td><td>런던</td></tr>
+                <tr><td class="num">562</td><td>리윤신호탄</td></tr>
+                <tr><td class="num">574</td><td>우리키마</td></tr>
+                <tr><td class="num">586</td><td>유정신호탄</td></tr>
+                <tr><td class="num">588</td><td>ybxl</td></tr>
+                <tr><td class="num">589</td><td>오바하지마세요</td></tr>
+                <tr><td class="num">601</td><td>작은염보갑갑</td></tr>
+                <tr><td class="num">606</td><td>작은로드</td></tr>
+                <tr><td class="num">609</td><td>작은부여이모김치</td></tr>
+                <tr><td class="num">610</td><td>작은아라</td></tr>
+                <tr><td class="num">625</td><td>작은곳간이</td></tr>
+                <tr><td class="num">635</td><td>작은현자타임보성</td></tr>
+                <tr><td class="num">645</td><td>작은소다소다?</td></tr>
+                <tr><td class="num">646</td><td>작은우리낭니</td></tr>
+                <tr><td class="num">648</td><td>작은켄드릭라마</td></tr>
+                <tr><td class="num">688</td><td>작은퐝팡</td></tr>
+                <tr><td class="num">700</td><td>힙합걸</td></tr>
+                <tr><td class="num">727</td><td>하랑신호탄</td></tr>
+                <tr><td class="num">777</td><td>염징어게임</td></tr>
+                <tr><td class="num">778</td><td>쩔밍신호탄</td></tr>
+                <tr><td class="num">816</td><td>작은BBinnss</td></tr>
+                <tr><td class="num">888</td><td>살아있네</td></tr>
+                <tr><td class="num">899</td><td>계엄령</td></tr>
+                <tr><td class="num">959</td><td>염딱하게</td></tr>
+                <tr><td class="num">999</td><td>피리</td></tr>
+                <tr><td class="num">1000</td><td>1만</td></tr>
+                <tr><td class="num">1001</td><td>시대를초월</td></tr>
+                <tr><td class="num">1002</td><td>귀멸의칼날</td></tr>
+                <tr><td class="num">1003</td><td>냥이강쥐조아</td></tr>
+                <tr><td class="num">1004</td><td>사케사랑</td></tr>
+                <tr><td class="num">1005</td><td>원더랜드</td></tr>
+                <tr><td class="num">1007</td><td>NO.7</td></tr>
+                <tr><td class="num">1008</td><td>이슬의태양</td></tr>
+                <tr><td class="num">1009</td><td>극강의섹시충</td></tr>
+                <tr><td class="num">1010</td><td>아라</td></tr>
+                <tr><td class="num">1011</td><td>아르</td></tr>
+                <tr><td class="num">1012</td><td>뒤스커버리</td></tr>
+                <tr><td class="num">1015</td><td>BANGBEOP</td></tr>
+                <tr><td class="num">1017</td><td>단풍이든다</td></tr>
+                <tr><td class="num">1019</td><td>A-랄랄라</td></tr>
+                <tr><td class="num">1020</td><td>작은zozo20</td></tr>
+                <tr><td class="num">1021</td><td>김가해자</td></tr>
+                <tr><td class="num">1022</td><td>A쵸이영</td></tr>
+                <tr><td class="num">1023</td><td>Rain</td></tr>
+                <tr><td class="num">1024</td><td>다라이퀸</td></tr>
+                <tr><td class="num">1025</td><td>곳간이</td></tr>
+                <tr><td class="num">1026</td><td>Bdd</td></tr>
+                <tr><td class="num">1027</td><td>까멘개</td></tr>
+                <tr><td class="num">1028</td><td>디스코테카</td></tr>
+                <tr><td class="num">1029</td><td>킹콩콩</td></tr>
+                <tr><td class="num">1030</td><td>작은끌리면쏨</td></tr>
+                <tr><td class="num">1032</td><td>엄써</td></tr>
+                <tr><td class="num">1033</td><td>입술사수보성</td></tr>
+                <tr><td class="num">1034</td><td>Me낼름2</td></tr>
+                <tr><td class="num">1035</td><td>미미도리아</td></tr>
+                <tr><td class="num">1036</td><td>슈루</td></tr>
+                <tr><td class="num">1038</td><td>김센세</td></tr>
+                <tr><td class="num">1040</td><td>Pode</td></tr>
+                <tr><td class="num">1042</td><td>소지네수염</td></tr>
+                <tr><td class="num">1043</td><td>A-폴라포도</td></tr>
+                <tr><td class="num">1044</td><td>리아가</td></tr>
+                <tr><td class="num">1045</td><td>거지사육사</td></tr>
+                <tr><td class="num">1046</td><td>부산</td></tr>
+                <tr><td class="num">1047</td><td>BootyLoose</td></tr>
+                <tr><td class="num">1048</td><td>켄드릭라마</td></tr>
+                <tr><td class="num">1049</td><td>아구몬</td></tr>
+                <tr><td class="num">1051</td><td>방법</td></tr>
+                <tr><td class="num">1053</td><td>SONICS</td></tr>
+                <tr><td class="num">1054</td><td>소다소다?</td></tr>
+                <tr><td class="num">1055</td><td>윈드세븐</td></tr>
+                <tr><td class="num">1058</td><td>#iceland</td></tr>
+                <tr><td class="num">1060</td><td>풍배틀러2</td></tr>
+                <tr><td class="num">1061</td><td>생기다만보성</td></tr>
+                <tr><td class="num">1062</td><td>큐브</td></tr>
+                <tr><td class="num">1064</td><td>왕족발</td></tr>
+                <tr><td class="num">1066</td><td>Stork폭풍랩</td></tr>
+                <tr><td class="num">1069</td><td>한남더힐</td></tr>
+                <tr><td class="num">1070</td><td>A-잘해</td></tr>
+                <tr><td class="num">1071</td><td>봉지원</td></tr>
+                <tr><td class="num">1072</td><td>마티니</td></tr>
+                <tr><td class="num">1073</td><td>김복덩v</td></tr>
+                <tr><td class="num">1074</td><td>아키마</td></tr>
+                <tr><td class="num">1075</td><td>커멘취소보성</td></tr>
+                <tr><td class="num">1077</td><td>A-염보갑갑</td></tr>
+                <tr><td class="num">1078</td><td>로봇찌빠</td></tr>
+                <tr><td class="num">1080</td><td>갈곳잃음</td></tr>
+                <tr><td class="num">1083</td><td>염보의제1검</td></tr>
+                <tr><td class="num">1085</td><td>소말리아보성</td></tr>
+                <tr><td class="num">1088</td><td>갓란형</td></tr>
+                <tr><td class="num">1089</td><td>지금함뜨자!</td></tr>
+                <tr><td class="num">1090</td><td>지나가던똥개</td></tr>
+                <tr><td class="num">1091</td><td>부끄럼크림</td></tr>
+                <tr><td class="num">1092</td><td>불량감자</td></tr>
+                <tr><td class="num">1093</td><td>부여이모김치</td></tr>
+                <tr><td class="num">1095</td><td>빛이되어줘</td></tr>
+                <tr><td class="num">1097</td><td>gan.D.iamon</td></tr>
+                <tr><td class="num">1100</td><td>지유의10시</td></tr>
+                <tr><td class="num">1101</td><td>Atmosphere</td></tr>
+                <tr><td class="num">1110</td><td>빛나는쩡플단</td></tr>
+                <tr><td class="num">1116</td><td>벤카쉐</td></tr>
+                <tr><td class="num">1117</td><td>빼이V</td></tr>
+                <tr><td class="num">1119</td><td>크렉킹</td></tr>
+                <tr><td class="num">1120</td><td>블랙타익커</td></tr>
+                <tr><td class="num">1122</td><td>A-쵸파</td></tr>
+                <tr><td class="num">1125</td><td>첫눈이내린다</td></tr>
+                <tr><td class="num">1131</td><td>복숭아구름</td></tr>
+                <tr><td class="num">1132</td><td>찌니찐아</td></tr>
+                <tr><td class="num">1162</td><td>Lord</td></tr>
+                <tr><td class="num">1199</td><td>강태풍</td></tr>
+                <tr><td class="num">1222</td><td>치즈러시</td></tr>
+                <tr><td class="num">1224</td><td>#채팅없음</td></tr>
+                <tr><td class="num">1226</td><td>BBinnss</td></tr>
+                <tr><td class="num">1234</td><td>That's OK</td></tr>
+                <tr><td class="num">1243</td><td>사랑해서니</td></tr>
+                <tr><td class="num">1245</td><td>냥이강쥐조아2</td></tr>
+                <tr><td class="num">1247</td><td>사랑해쩔밍</td></tr>
+                <tr><td class="num">1252</td><td>사랑해후잉</td></tr>
+                <tr><td class="num">1254</td><td>사랑해소다</td></tr>
+                <tr><td class="num">1255</td><td>쩡S2_반월</td></tr>
+                <tr><td class="num">1256</td><td>슈퍼물개단</td></tr>
+                <tr><td class="num">1257</td><td>요즘짜증난다</td></tr>
+                <tr><td class="num">1262</td><td>사랑해리윤</td></tr>
+                <tr><td class="num">1272</td><td>하랑하랑해</td></tr>
+                <tr><td class="num">1277</td><td>리얼마에스트로</td></tr>
+                <tr><td class="num">1284</td><td>우리낭니</td></tr>
+                <tr><td class="num">1289</td><td>Me낼름</td></tr>
+                <tr><td class="num">1333</td><td>낭국지</td></tr>
+                <tr><td class="num">1404</td><td>살의리랏다</td></tr>
+                <tr><td class="num">1426</td><td>또끈또끈</td></tr>
+                <tr><td class="num">1444</td><td>슨스</td></tr>
+                <tr><td class="num">1500</td><td>YXL레쓰고</td></tr>
+                <tr><td class="num">1502</td><td>커맨더쥐콩콩</td></tr>
+                <tr><td class="num">1505</td><td>위드아웃유</td></tr>
+                <tr><td class="num">1519</td><td>rewrite the stars</td></tr>
+                <tr><td class="num">1555</td><td>월량대표아적심</td></tr>
+                <tr><td class="num">1565</td><td>낭로우로우로</td></tr>
+                <tr><td class="num">1610</td><td>과몰입금지흠</td></tr>
+                <tr><td class="num">1661</td><td>유누의검</td></tr>
+                <tr><td class="num">1666</td><td>작은막시무스</td></tr>
+                <tr><td class="num">1697</td><td>불깨츄</td></tr>
+                <tr><td class="num">1724</td><td>데이지</td></tr>
+                <tr><td class="num">1777</td><td>STARWALKIN</td></tr>
+                <tr><td class="num">1818</td><td>니네오빠다데려와</td></tr>
+                <tr><td class="num">1828</td><td>야나감당되겠어?</td></tr>
+                <tr><td class="num">1835</td><td>현자타임보성</td></tr>
+                <tr><td class="num">2000</td><td>마녀키키</td></tr>
+                <tr><td class="num">2016</td><td>Lord</td></tr>
+                <tr><td class="num">2020</td><td>zozo20</td></tr>
+                <tr><td class="num">2030</td><td>끌리면쏨</td></tr>
+                <tr><td class="num">2034</td><td>슈퍼낼름</td></tr>
+                <tr><td class="num">2049</td><td>바구</td></tr>
+                <tr><td class="num">2054</td><td>소다소다?</td></tr>
+                <tr><td class="num">2089</td><td>슈퍼지금함뜨자!</td></tr>
+                <tr><td class="num">2095</td><td>염보스</td></tr>
+                <tr><td class="num">2024</td><td>갓이즈어걸</td></tr>
+                <tr><td class="num">2077</td><td>리얼마에스트로v2</td></tr>
+                <tr><td class="num">2092</td><td>슈퍼불량감자</td></tr>
+                <tr><td class="num">2111</td><td>사기캐</td></tr>
+                <tr><td class="num">2129</td><td>슈퍼블랙타익커</td></tr>
+                <tr><td class="num">2157</td><td>슈퍼냥이강쥐조아</td></tr>
+                <tr><td class="num">2199</td><td>슈퍼강태풍</td></tr>
+                <tr><td class="num">2382</td><td>빡e</td></tr>
+                <tr><td class="num">2523</td><td>슈퍼BBinnss</td></tr>
+                <tr><td class="num">2524</td><td>BIONANO</td></tr>
+                <tr><td class="num">2666</td><td>막시무스</td></tr>
+                <tr><td class="num">2674</td><td>앞니69</td></tr>
+                <tr><td class="num">2824</td><td>슈퍼우리낭니</td></tr>
+                <tr><td class="num">2888</td><td>슈퍼벤카쉐</td></tr>
+                <tr><td class="num">2927</td><td>슈퍼까멘</td></tr>
+                <tr><td class="num">2996</td><td>대음기</td></tr>
+                <tr><td class="num">2999</td><td>슈퍼바구</td></tr>
+                <tr><td class="num">3000</td><td>3만</td></tr>
+                <tr><td class="num">3040</td><td>ME낼름</td></tr>
+                <tr><td class="num">3333</td><td>만개화</td></tr>
+                <tr><td class="num">~49999</td><td>Forgive</td></tr>
+                <tr><td class="num">5000</td><td>5만</td></tr>
+                <tr><td class="num">10000</td><td>VIP</td></tr>
+                <tr><td class="num">10095</td><td>100095</td></tr>
+                <tr><td class="num">10272</td><td>SUPERMAXGGAS</td></tr>
+                <tr><td class="num">20000</td><td>VVIP</td></tr>
+                <tr><td class="num">30000</td><td>GOD</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>© YXL</span>
+      </div>
+    </div>
   </div>
-
-  <table id="songTable">
-    <thead>
-      <tr>
-        <th>번호</th>
-        <th>제목</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>111</td><td>귀여워서미안해</td></tr>
-      <tr><td>112</td><td>이라이라</td></tr>
-      <tr><td>113</td><td>이안챌린지</td></tr>
-      <tr><td>114</td><td>마티니</td></tr>
-      <tr><td>115</td><td>뾱뾱이</td></tr>
-      <tr><td>116</td><td>바라밤</td></tr>
-      <tr><td>117</td><td>모찌에요</td></tr>
-      <tr><td>118</td><td>Hold Up(홀드업)</td></tr>
-      <tr><td>131</td><td>스파크</td></tr>
-      <tr><td>132</td><td>Sticky(스티키)</td></tr>
-      <tr><td>134</td><td>헤비머신건</td></tr>
-      <tr><td>135</td><td>위플래쉬</td></tr>
-      <tr><td>136</td><td>Fast Car(패스트카)</td></tr>
-      <tr><td>137</td><td>London(런던)</td></tr>
-      <tr><td>138</td><td>핫해</td></tr>
-      <tr><td>139</td><td>베이스다운로드</td></tr>
-      <tr><td>144</td><td>上車舞(상차무)</td></tr>
-      <tr><td>145</td><td>러브어택</td></tr>
-      <tr><td>146</td><td>GO댄스</td></tr>
-      <tr><td>147</td><td>이머전시</td></tr>
-      <tr><td>151</td><td>핑크레이디</td></tr>
-      <tr><td>152</td><td>XOXZ</td></tr>
-      <tr><td>153</td><td>버터플라이</td></tr>
-      <tr><td>154</td><td>긁?</td></tr>
-      <tr><td>155</td><td>지금우리</td></tr>
-      <tr><td>156</td><td>카리나닮았대</td></tr>
-      <tr><td>157</td><td>Closer(클로저)</td></tr>
-      <tr><td>158</td><td>그래비티</td></tr>
-      <tr><td>159</td><td>호영레이블</td></tr>
-      <tr><td>160</td><td>빌려온고양이</td></tr>
-      <tr><td>170</td><td>간바레센빠이</td></tr>
-      <tr><td>175</td><td>여우</td></tr>
-      <tr><td>180</td><td>우유</td></tr>
-      <tr><td>185</td><td>바디</td></tr>
-      <tr><td>190</td><td>이쿠요</td></tr>
-      <tr><td>200</td><td>제로투</td></tr>
-      <tr><td>210</td><td>L.S.D(엘에스디)</td></tr>
-      <tr><td>220</td><td>오빠달려붕붕</td></tr>
-      <tr><td>230</td><td>부티바운스</td></tr>
-      <tr><td>240</td><td>엉큰녀</td></tr>
-      <tr><td>250</td><td>바우치</td></tr>
-      <tr><td>260</td><td>터미널</td></tr>
-      <tr><td>270</td><td>개굴</td></tr>
-      <tr><td>280</td><td>계엄령</td></tr>
-      <tr><td>290</td><td>앙카</td></tr>
-      <tr><td>310</td><td>센세</td></tr>
-      <tr><td>320</td><td>빠라뉴</td></tr>
-      <tr><td>330</td><td>오빠하앙</td></tr>
-      <tr><td>340</td><td>드라우닝</td></tr>
-      <tr><td>350</td><td>이쁜여자가좋더라</td></tr>
-      <tr><td>360</td><td>디스코테카</td></tr>
-      <tr><td>540</td><td>러브투나잇</td></tr>
-      <tr><td>550</td><td>큰상한가개</td></tr>
-      <tr><td>560</td><td>Heart(하트)</td></tr>
-      <tr><td>570</td><td>Golden(골든)</td></tr>
-      <tr><td>580</td><td>만개화</td></tr>
-      <tr><td>600</td><td>Booty Loose(부티루즈</td></tr>
-      <tr><td>620</td><td>Beggin(비긴)</td></tr>
-      <tr><td>640</td><td>Celestial(셀레스티얼)</td></tr>
-      <tr><td>660</td><td>철박이개</td></tr>
-      <tr><td>680</td><td>파라노이드</td></tr>
-      <tr><td>700</td><td>When I Get Old(웬아이겟올드)</td></tr>
-      <tr><td>720</td><td>3단앙카</td></tr>
-    </tbody>
-  </table>
-
-  <p id="countText">총 63개의 곡이 있습니다.</p>
 
   <script>
     const input = document.getElementById('searchInput');
@@ -142,21 +631,28 @@
     const rows = table.getElementsByTagName('tr');
     const countText = document.getElementById('countText');
 
+    function setCount(total, visible, keyword) {
+      if (!keyword) {
+        countText.textContent = `총 ${total}개의 곡`;
+      } else {
+        countText.textContent = `검색 결과 ${visible}개 / 총 ${total}개`;
+      }
+    }
+
     function filterSongs() {
       const keyword = input.value.trim().toLowerCase();
       let visibleCount = 0;
 
-      for (let i = 1; i < rows.length; i++) { // 0번은 헤더
-        const numberCell = rows[i].cells[0];  // 번호 셀
-        const titleCell = rows[i].cells[1];   // 제목 셀
-        
+      // rows[0] = 헤더
+      for (let i = 1; i < rows.length; i++) {
+        const numberCell = rows[i].cells[0];
+        const titleCell = rows[i].cells[1];
         if (!numberCell || !titleCell) continue;
-        
+
         const number = numberCell.textContent.toLowerCase();
         const title = titleCell.textContent.toLowerCase();
 
-        // 번호 또는 제목에 검색어가 포함되어 있으면 표시
-        if (number.indexOf(keyword) !== -1 || title.indexOf(keyword) !== -1) {
+        if (keyword === '' || number.includes(keyword) || title.includes(keyword)) {
           rows[i].style.display = '';
           visibleCount++;
         } else {
@@ -164,15 +660,13 @@
         }
       }
 
-      if (keyword === '') {
-        countText.textContent = '총 63개의 곡이 있습니다.';
-      } else {
-        countText.textContent = '검색 결과 ' + visibleCount + '개의 곡이 있습니다.';
-      }
+      const total = rows.length - 1;
+      setCount(total, visibleCount, keyword);
     }
 
+    // 초기 카운트 세팅
+    setCount(rows.length - 1, rows.length - 1, '');
     input.addEventListener('input', filterSongs);
   </script>
-
 </body>
 </html>
