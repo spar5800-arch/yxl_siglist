@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>YXL 시그 리스트</title>
+<style>
+body {
+  background-color: #FFF6F2;
+  font-family: Arial, sans-serif;
+}
+.container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 560px;
+  margin: 30px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+input[type="text"] {
+  width: 70%;
+  padding: 8px 12px;
+  margin: 20px auto;
+  display: block;
+  border: 2px solid #FFC0CB;
+  border-radius: 20px;
+  outline: none;
+  font-size: 16px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th {
+  background-color: #FFE0E0;
+  color: #333;
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #f2caca;
+}
+tr:hover {
+  background-color: #FFF0F0;
+}
+.sig-name {
+  font-weight: bold;
+}
+.new-badge, .season-badge {
+  color: #ff3b3b;
+  font-weight: bold;
+  margin-left: 6px;
+  font-size: 13px;
+}
+.empty {
+  color: #777;
+  padding: 18px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <img src="배너이미지주소.png" alt="배너" style="display:block;margin:20px auto;width:70%;">
+  <input id="search" placeholder="시그 검색..." type="text" />
+  
+  <table>
+    <thead>
+      <tr>
+        <th id="thNo">번호 ▲</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script type="application/json" id="data">
+[
+  {"no":112,"name":"진압해"},
+  {"no":118,"name":"치킨바나나"},
+  {"no":121,"name":"테·스"},
+  {"no":122,"name":"첫눈"},
+  {"no":123,"name":"내얘길들어봐"},
+  {"no":124,"name":"왜요왜요"},
+  {"no":125,"name":"날라리"},
+  {"no":126,"name":"카리나닮았대"},
+  {"no":128,"name":"버블"},
+  {"no":129,"name":"candy theif"},
+  {"no":132,"name":"쓸애기"},
+  {"no":133,"name":"마그네틱"},
+  {"no":134,"name":"body"},
+  {"no":135,"name":"무아"},
+  {"no":139,"name":"쌔끈빠끈"},
+  {"no":141,"name":"빛을따라서"},
+  {"no":145,"name":"힙합보단사랑"},
+  {"no":149,"name":"오버드라이브"},
+  {"no":150,"name":"바빠"},
+  {"no":151,"name":"캉거루"},
+  {"no":152,"name":"외모체크"},
+  {"no":153,"name":"러브쉐이크"},
+  {"no":154,"name":"샤넬챌린지"},
+  {"no":157,"name":"키딩"},
+  {"no":158,"name":"찔려"},
+  {"no":165,"name":"It's Sexy"},
+  {"no":166,"name":"모시모시"},
+  {"no":167,"name":"여름이었다"},
+  {"no":171,"name":"BDZ"},
+  {"no":181,"name":"뻐킹뱅어"},
+  {"no":182,"name":"WTF"},
+  {"no":183,"name":"씨봐레츠코"},
+  {"no":184,"name":"야메떼"},
+  {"no":185,"name":"킹받쥬"},
+  {"no":188,"name":"피리송"},
+  {"no":189,"name":"롤러코스터"},
+  {"no":191,"name":"간바레센빠이"},
+  {"no":197,"name":"런웨이"},
+  {"no":200,"name":"팬서비스"},
+  {"no":201,"name":"젤리젤리"},
+  {"no":203,"name":"I want you"},
+  {"no":205,"name":"붐샤카라카"},
+  {"no":206,"name":"하얀그리움"},
+  {"no":218,"name":"위플래시"},
+  {"no":219,"name":"몸"},
+  {"no":220,"name":"bass down low"},
+  {"no":221,"name":"블루발렌타인"},
+  {"no":222,"name":"뱅뱅뱅"},
+  {"no":225,"name":"우주로"},
+  {"no":226,"name":"스트로베리러쉬"},
+  {"no":228,"name":"오늘만 ILOVEYOU"},
+  {"no":229,"name":"빠이어"},
+  {"no":230,"name":"we go up"},
+  {"no":233,"name":"왠지"},
+  {"no":234,"name":"섹시푸드"},
+  {"no":237,"name":"고민중독"},
+  {"no":242,"name":"우유"},
+  {"no":244,"name":"여우"},
+  {"no":247,"name":"착하다는말이 제일 싫어"},
+  {"no":248,"name":"나랑사귈래"},
+  {"no":252,"name":"라라리라라"},
+  {"no":255,"name":"사랑받을준비완료"},
+  {"no":258,"name":"오빠바이러스"},
+  {"no":264,"name":"아헤가오"},
+  {"no":266,"name":"뚜뚜뚜뚜"},
+  {"no":278,"name":"GOOD STUFF"},
+  {"no":280,"name":"슈퍼밍밍"},
+  {"no":283,"name":"Brrr"},
+  {"no":287,"name":"핑크레이디"},
+  {"no":299,"name":"돈생기면풍쏨"},
+  {"no":300,"name":"한마디"},
+  {"no":301,"name":"리치맨"},
+  {"no":303,"name":"아이스크림"},
+  {"no":304,"name":"100개"},
+  {"no":305,"name":"핑크후디"},
+  {"no":306,"name":"자기야 화풀어"},
+  {"no":307,"name":"레츠고"},
+  {"no":313,"name":"Door"},
+  {"no":322,"name":"이쁜여자"},
+  {"no":323,"name":"찰칵"},
+  {"no":324,"name":"너와의모든지금"},
+  {"no":332,"name":"원더랜드"},
+  {"no":333,"name":"바니바니"},
+  {"no":345,"name":"LSD"},
+  {"no":363,"name":"뛰어"},
+  {"no":386,"name":"눈물참기"},
+  {"no":387,"name":"누나가알려줄게"},
+  {"no":388,"name":"헨타이"},
+  {"no":389,"name":"EDM"},
+  {"no":401,"name":"like i do"},
+  {"no":404,"name":"텐션업"},
+  {"no":424,"name":"바닥드라군"},
+  {"no":434,"name":"살아있네"},
+  {"no":442,"name":"둥따다"},
+  {"no":473,"name":"전략적후퇴"},
+  {"no":477,"name":"사기캐"},
+  {"no":488,"name":"칭칭언니 귀여워"},
+  {"no":490,"name":"슈퍼티모"},
+  {"no":501,"name":"호미들"},
+  {"no":505,"name":"호영레이블"},
+  {"no":506,"name":"Beggin"},
+  {"no":508,"name":"퐁퐁구"},
+  {"no":509,"name":"[C9]허당박"},
+  {"no":510,"name":"주차개"},
+  {"no":511,"name":"혜루신호탄"},
+  {"no":527,"name":"슈퍼킥드베"},
+  {"no":544,"name":"NaNaNa"},
+  {"no":555,"name":"Fast Cars"},
+  {"no":557,"name":"초초신호탄"},
+  {"no":570,"name":"설희신호탄"},
+  {"no":572,"name":"파밍단신호탄"},
+  {"no":573,"name":"온리세라"},
+  {"no":574,"name":"해아신호탄"},
+  {"no":576,"name":"아윤신호탄"},
+  {"no":577,"name":"오직민철"},
+  {"no":578,"name":"이루리"},
+  {"no":579,"name":"경경경"},
+  {"no":585,"name":"나무늘봉순"},
+  {"no":586,"name":"수니단신호탄"},
+  {"no":587,"name":"찌찌단"},
+  {"no":588,"name":"오빠하앙"},
+  {"no":590,"name":"슈퍼오빠달려붕붕"},
+  {"no":591,"name":"계엄령"},
+  {"no":599,"name":"주녁깅"},
+  {"no":650,"name":"두더지"},
+  {"no":697,"name":"흐름유지"},
+  {"no":712,"name":"와e다"},
+  {"no":727,"name":"스키스키"},
+  {"no":777,"name":"베네딕트"},
+  {"no":789,"name":"꾸리형"},
+  {"no":797,"name":"신세계"},
+  {"no":800,"name":"빵훈신호탄"},
+  {"no":888,"name":"피리"},
+  {"no":982,"name":"굿바이"},
+  {"no":999,"name":"개쳐발렷쥬"},
+  {"no":1000,"name":"웰컴투씨나인"},
+  {"no":1001,"name":"로드잭"},
+  {"no":1002,"name":"봉다리"},
+  {"no":1003,"name":"쥬"},
+  {"no":1004,"name":"퀸어셈블"},
+  {"no":1005,"name":"Not like us"},
+  {"no":1006,"name":"첩"},
+  {"no":1007,"name":"시그"},
+  {"no":1008,"name":"우산"},
+  {"no":1009,"name":"씨나인"},
+  {"no":1010,"name":"커멘더H"},
+  {"no":1011,"name":"BIG LOVE"},
+  {"no":1012,"name":"만로디"},
+  {"no":1013,"name":"코인은길대장","new":true},
+  {"no":1014,"name":"감나무"}
+  
+  // ... (나머지 데이터 생략 - 위 코드에 다 있음)
+]
+</script>
+
+<script>
+const input = document.getElementById("search");
+const tbody = document.getElementById("tbody");
+const thNo = document.getElementById("thNo");
+const SIGS = JSON.parse(document.getElementById("data").textContent);
+
+let ascending = true;
+let current = [...SIGS];
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function sortAndRender() {
+  current.sort((a,b)=>ascending ? a.no-b.no : b.no-a.no);
+  render(current);
+}
+
+function render(rows) {
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="2" class="empty">검색 결과 없음</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(({no,name,new:isNew,season})=>`
+    <tr>
+      <td>${no}</td>
+      <td class="sig-name">
+        │ ${escapeHtml(name)}
+        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+        ${season ? '<span class="season-badge">Season</span>' : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+input.addEventListener("keyup",()=>{
+  const q = input.value.toLowerCase().trim();
+  current = SIGS.filter(v =>
+    String(v.no).includes(q) || v.name.toLowerCase().includes(q)
+  );
+  sortAndRender();
+});
+
+thNo.onclick = ()=>{
+  ascending = !ascending;
+  thNo.textContent = ascending ? "번호 ▲" : "번호 ▼";
+  sortAndRender();
+};
+
+sortAndRender();
+</script>
+</body>
+</html>
