@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>🐰YXL 갠방 시그 목록🐰</title>
+  <title>YXL 갠방 시그 목록</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -49,14 +49,14 @@
   <!-- 사이트 로고 위치 (이미지 쓰고 싶으면 여기에 <img> 추가) -->
   <!-- <img src="로고이미지주소" alt="사이트 로고"> -->
 
-  <h1>YXL 갠방 시그 목록🐰</h1>
+  <h1>YXL 갠방 시그 목록</h1>
 
   <div class="search-box">
     <input
       type="text"
       id="searchInput"
-      placeholder="곡 제목으로 검색 (예: 살아있네)"
-      aria-label="곡 제목으로 검색 (예: 살아있네)"
+      placeholder="번호 또는 제목으로 검색 (예: 280, 계엄령)"
+      aria-label="번호 또는 제목으로 검색"
     >
   </div>
 
@@ -147,11 +147,16 @@
       let visibleCount = 0;
 
       for (let i = 1; i < rows.length; i++) { // 0번은 헤더
-        const titleCell = rows[i].cells[1];
-        if (!titleCell) continue;
+        const numberCell = rows[i].cells[0];  // 번호 셀
+        const titleCell = rows[i].cells[1];   // 제목 셀
+        
+        if (!numberCell || !titleCell) continue;
+        
+        const number = numberCell.textContent.toLowerCase();
         const title = titleCell.textContent.toLowerCase();
 
-        if (title.indexOf(keyword) !== -1) {
+        // 번호 또는 제목에 검색어가 포함되어 있으면 표시
+        if (number.indexOf(keyword) !== -1 || title.indexOf(keyword) !== -1) {
           rows[i].style.display = '';
           visibleCount++;
         } else {
