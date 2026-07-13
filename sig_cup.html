@@ -3,33 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <style>
-    /* 1. 최대 넓이 제한 해제! 100% 꽉 차게 만듭니다 */
-    .worldcup-container { width: 100%; max-width: 100%; margin: 0 auto; font-family: 'Malgun Gothic', sans-serif; text-align: center; background: #1a1a1a; color: #fff; padding: 40px; box-sizing: border-box; border-radius: 12px; }
+    /* 1. 전체 틀: 웹사이트 공간에 맞춰 100% 꽉 차게 */
+    .worldcup-container { width: 100%; margin: 0 auto; font-family: 'Malgun Gothic', sans-serif; text-align: center; background: #1a1a1a; color: #fff; padding: 30px 20px; box-sizing: border-box; border-radius: 12px; }
     
-    /* 2. 제목과 라운드 글씨 큼직하게 확대 */
-    .worldcup-title { font-size: 48px; margin-bottom: 20px; font-weight: bold; color: #4b7bec; }
-    .worldcup-round { font-size: 32px; margin-bottom: 40px; color: #aaa; }
+    .worldcup-title { font-size: 36px; margin-bottom: 15px; font-weight: bold; color: #4b7bec; }
+    .worldcup-round { font-size: 24px; margin-bottom: 30px; color: #aaa; }
     
-    .worldcup-vs-wrapper { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; }
+    /* 2. 🔥 핵심 수정: 무조건 나란히(가로) 서도록 강제 설정 */
+    .worldcup-vs-wrapper { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; }
     
-    /* 3. 영상 박스 기본 크기를 팍 키움 */
-    .worldcup-item { flex: 1; min-width: 600px; background: #2a2a2a; border: 4px solid #444; border-radius: 12px; padding: 30px; box-sizing: border-box; }
+    /* 3. 후보 박스: 고정 크기를 없애고 양쪽에서 각각 42%씩 공간을 차지하게 함 */
+    .worldcup-item { width: 42%; background: #2a2a2a; border: 4px solid #444; border-radius: 12px; padding: 20px; box-sizing: border-box; }
     
-    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-bottom: 25px; background: #000; }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-bottom: 20px; background: #000; width: 100%; }
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     
-    /* 4. 후보 이름과 VS 폰트 확대 */
-    .item-name { font-size: 28px; font-weight: bold; margin-bottom: 20px; line-height: 1.5; word-break: keep-all; }
-    .vs-text { font-size: 60px; font-weight: bold; color: #ff4757; font-style: italic; padding: 20px; }
+    .item-name { font-size: 20px; font-weight: bold; margin-bottom: 15px; line-height: 1.4; word-break: keep-all; }
     
-    /* 5. 선택 버튼도 시원시원하게 */
-    .select-btn { display: inline-block; width: 100%; padding: 20px 0; font-size: 28px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    /* 4. VS 텍스트: 무조건 가운데 10% 공간에 예쁘게 배치 */
+    .vs-text { width: 10%; font-size: clamp(24px, 4vw, 50px); font-weight: bold; color: #ff4757; font-style: italic; text-align: center; padding: 0 10px; }
+    
+    .select-btn { display: inline-block; width: 100%; padding: 15px 0; font-size: 20px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
     .select-btn:hover { background: #3867d6; }
 
-    /* 6. 우승 화면 스케일 업 */
-    .winner-screen { display: none; padding: 60px 20px; background: #222; border-radius: 12px; border: 4px solid #4b7bec; }
-    .winner-title { font-size: 50px; color: #4b7bec; font-weight: bold; margin-bottom: 40px; }
-    .restart-btn { margin-top: 40px; padding: 20px 60px; font-size: 28px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+    .winner-screen { display: none; padding: 50px 20px; background: #222; border-radius: 12px; border: 4px solid #4b7bec; }
+    .winner-title { font-size: 40px; color: #4b7bec; font-weight: bold; margin-bottom: 30px; }
+    .restart-btn { margin-top: 30px; padding: 15px 40px; font-size: 24px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+
+    /* 5. 모바일 배려: 스마트폰처럼 너무 좁은 화면에서만 위아래로 꺾이게 예외 처리 */
+    @media (max-width: 768px) {
+        .worldcup-vs-wrapper { flex-direction: column; gap: 15px; }
+        .worldcup-item { width: 100%; }
+        .vs-text { width: 100%; font-size: 30px; padding: 10px 0; }
+    }
   </style>
 </head>
 <body>
@@ -62,7 +68,7 @@
 
   <div id="winner-zone" class="winner-screen">
     <div class="winner-title">👑 최종 우승! 👑</div>
-    <div id="winner-video-wrapper" style="max-width: 1200px; margin: 0 auto;">
+    <div id="winner-video-wrapper" style="max-width: 1000px; margin: 0 auto;">
       <div class="video-container">
         <iframe id="soop-player-winner" src="" allowfullscreen></iframe>
       </div>
@@ -158,7 +164,6 @@
     initGame();
   }
 
-  // 💡 핵심 수정 부분: 페이지 껍데기가 다 불러와지면 그제야 강제로 시작하게 만듦
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initGame);
   } else {
