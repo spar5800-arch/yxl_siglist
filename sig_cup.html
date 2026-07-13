@@ -1,5 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* 전체 틀 설정 */
+    .worldcup-container { width: 100%; margin: 0 auto; font-family: 'Malgun Gothic', sans-serif; text-align: center; background: #1a1a1a; color: #fff; padding: 40px 20px; box-sizing: border-box; border-radius: 12px; }
+    .worldcup-title { font-size: 36px; margin-bottom: 15px; font-weight: bold; color: #4b7bec; }
+    .worldcup-round { font-size: 24px; margin-bottom: 40px; color: #aaa; }
+    
+    /* 세로 배치 */
+    .worldcup-vs-wrapper { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; box-sizing: border-box; }
+    
+    /* 후보 박스 (최대 1000px로 큼직하게) */
+    .worldcup-item { width: 100%; max-width: 1000px; background: #2a2a2a; border: 4px solid #444; border-radius: 12px; padding: 25px; box-sizing: border-box; position: relative; }
+    
+    /* 영상 비율 유지 (16:9) */
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-bottom: 25px; background: #000; width: 100%; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    
+    /* 타이머로 영상이 종료되었을 때 덮어씌울 가림막 */
+    .video-ended-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; border-radius: 8px; z-index: 10; display: none; }
+    
+    .item-name { font-size: 26px; font-weight: bold; margin-bottom: 20px; line-height: 1.4; word-break: keep-all; }
+    .vs-text { font-size: 50px; font-weight: bold; color: #ff4757; font-style: italic; text-align: center; padding: 20px 0; margin: 10px 0; }
+    
+    /* 선택 버튼 */
+    .select-btn { display: inline-block; width: 100%; padding: 20px 0; font-size: 24px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
+    .select-btn:hover { background: #3867d6; }
+
+    /* 우승 화면 */
+    .winner-screen { display: none; padding: 60px 20px; background: #222; border-radius: 12px; border: 4px solid #4b7bec; }
+    .winner-title { font-size: 46px; color: #4b7bec; font-weight: bold; margin-bottom: 40px; }
+    .restart-btn { margin-top: 40px; padding: 20px 50px; font-size: 26px; font-weight: bold; background: #4b7bec; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="worldcup-container">
+  <div id="game-zone">
+    <div class="worldcup-title">🏆 YB 시그니처 영상 월드컵 🏆</div>
+    <div id="round-title" class="worldcup-round">128강 (로딩중...)</div>
+    
+    <div class="worldcup-vs-wrapper">
+      <!-- 상단 후보 -->
+      <div class="worldcup-item">
+        <div id="name-left" class="item-name">후보 1</div>
+        <div class="video-container">
+          <iframe id="soop-player-left" src="" allowfullscreen></iframe>
+          <div id="ended-left" class="video-ended-overlay">⛔ 지정된 재생 시간이 끝났습니다</div>
+        </div>
+        <button class="select-btn" onclick="selectItem(0)">✅ 이 영상 선택</button>
+      </div>
+
+      <div class="vs-text">VS</div>
+
+      <!-- 하단 후보 -->
+      <div class="worldcup-item">
+        <div id="name-right" class="item-name">후보 2</div>
+        <div class="video-container">
+          <iframe id="soop-player-right" src="" allowfullscreen></iframe>
+          <div id="ended-right" class="video-ended-overlay">⛔ 지정된 재생 시간이 끝났습니다</div>
+        </div>
+        <button class="select-btn" onclick="selectItem(1)">✅ 이 영상 선택</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="winner-zone" class="winner-screen">
+    <div class="winner-title">👑 최종 우승! 👑</div>
+    <div id="winner-video-wrapper" style="max-width: 1000px; margin: 0 auto;">
+      <div class="video-container">
+        <iframe id="soop-player-winner" src="" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div id="winner-name" class="item-name" style="font-size: 36px; color: #4b7bec; margin-top: 30px;">우승 항목</div>
+    <button class="restart-btn" onclick="restartGame()">다시 하기</button>
+  </div>
+</div>
+
 <script>
-  // 회원님이 주신 145개 전체 시그니처 영상 리스트 완벽 적용!
+  // 145개 리스트 전체 포함!
   const initialItems = [
     { name: "■ YXL S2-1 ■ 아키마 (10074) - 윤하랑", vodId: "146273259", start: 2, end: 52 },
     { name: "■ YXL S10-2 ■ 윈드세븐 (10525) - 후잉", vodId: "176438711" },
@@ -144,8 +224,7 @@
     { name: "■ YXL S14-0 ■ 로티 - 김유정", vodId: "193204617" },
     { name: "■ YXL S14-0 ■ 극극극강의섹시충 - 후잉", vodId: "193204439" },
     { name: "■ YXL S12-3 ■ 지금함뜨자! - 소다", vodId: "191675669" },
-    { name: "■ YXL S13-5 ■ 작은불량감자 - 류서하", vodId: "191672301" },
-    { name: "■ YXL S13-3 ■ 의문의깡계정 - 리윤", vodId: "191371649" }
+    { name: "■ YXL S13-5 ■ 작은불량감자 - 류서하", vodId: "191672301" }
   ];
 
   let items = [];
@@ -165,7 +244,6 @@
   }
 
   function initGame() {
-    // 💡 145개를 전부 섞은 다음, 오류가 안 나게 정확히 128개만 뽑아서 128강으로 시작!
     let allItems = [...initialItems];
     shuffle(allItems);
     items = allItems.slice(0, 128); 
@@ -273,3 +351,6 @@
     initGame();
   }
 </script>
+
+</body>
+</html>
