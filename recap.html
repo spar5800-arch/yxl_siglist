@@ -1,20 +1,38 @@
+<!-- 리캡 섹션 시작 -->
+<div class="recap-section" style="max-width: 600px; margin: 20px auto; padding: 30px; border: 1px solid #ddd; border-radius: 20px; text-align: center; background-color: #f9f9f9;">
+    
+    <h2 style="color: #333;">🚨 SOOP 리캡 이용 방법</h2>
+    
+    <!-- 사용법 가이드 이미지 -->
+    <div class="guide-image" style="margin: 20px 0;">
+        <img src="recap-guide.png" alt="리캡 이용 가이드" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    </div>
+
+    <!-- 단계별 설명 -->
+    <div style="text-align: left; font-size: 15px; color: #555; margin-bottom: 25px; line-height: 1.6;">
+        <p>1. 아래 <b>[🚀 리캡 시작하기]</b> 버튼을 누르면 코드가 자동으로 복사됩니다.</p>
+        <p>2. 잠시 후 열리는 SOOP 통계 페이지의 <b>주소창</b>을 클릭하세요.</p>
+        <p>3. 복사한 코드를 <b>[붙여넣기]</b> 하세요.</p>
+        <p style="color: #e63946; font-weight: bold;">4. 중요: 붙여넣으면 'javascript:'가 사라집니다! 맨 앞에 직접 <b>javascript:</b>를 입력하고 엔터를 누르세요.</p>
+    </div>
+
+    <!-- 실행 버튼 -->
+    <button onclick="startRecap()" style="padding: 15px 30px; font-size: 18px; font-weight: bold; cursor: pointer; background-color: #4b7bec; color: white; border: none; border-radius: 10px; transition: 0.3s;">
+        🚀 리캡 시작하기 (클릭 시 자동 복사 및 이동)
+    </button>
+</div>
+
+<!-- 스크립트 기능 -->
 <script>
 function startRecap() {
-    // 1. 사용할 스크립트 코드
     const code = "!function(){let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/jebibot/sp-recap/mobile.js',document.head.appendChild(s)}();";
+    // 사용자의 번거로움을 줄이기 위해 javascript: 포함해서 복사하도록 수정
     const fullCode = "javascript:" + code;
 
-    // 2. 클립보드에 자동 복사
     navigator.clipboard.writeText(fullCode).then(() => {
-        alert("스크립트가 복사되었습니다!\n\n다음 페이지 주소창에 '붙여넣기(Ctrl+V)' 후 엔터를 누르세요.");
-        
-        // 3. SOOP 통계 페이지로 자동 이동
+        alert("코드가 복사되었습니다! 이동한 페이지 주소창에 붙여넣기(Ctrl+V) 하세요.");
         window.open("https://m.sooplive.com/statistics/a/watch/?szModule=UserLiveWatchTimeData&szMethod=watch", "_blank");
     });
 }
 </script>
-
-<!-- 홈페이지에 넣을 버튼 -->
-<button onclick="startRecap()" style="padding: 20px 40px; font-size: 18px; cursor: pointer;">
-    🚀 리캡 시작하기 (클릭 시 자동 복사 및 이동)
-</button>
+<!-- 리캡 섹션 끝 -->
