@@ -666,42 +666,40 @@
   </div>
 
   <script>
-    const input = document.getElementById('searchInput');
-    const table = document.getElementById('songTable');
-    const rows = table.getElementsByTagName('tr');
+    const input     = document.getElementById('searchInput');
+    const table     = document.getElementById('songTable');
+    const rows      = table.getElementsByTagName('tr');
     const countText = document.getElementById('countText');
 
     const CHOSUNG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
     const STRIP_PREFIXES    = ['작은', '큰', '슈퍼'];
     const PREFIX_EXCEPTIONS = ['슈퍼그럼요'];
 
-    // 영어 제목 → 한국어 발음 초성 매핑
+    // 영어 제목 → 초성 매핑 (특수문자 제거 후 소문자 key)
     const ENG_MAP = {
-      'a':'ㅇ', 'hold up':'ㅎ', 'holdup':'ㅎ', 'thatsnono':'ㄷ', 'thats nono':'ㄷ', 'that\'s nono':'ㄷ',
-      'swing':'ㅅ', 'love':'ㄹ', 'goodbye':'ㄱ', 'good bye':'ㄱ', 'redred':'ㄹ', 'red red':'ㄹ',
-      'sexyfood':'ㅅ', 'sexy food':'ㅅ', 'irisout':'ㅇ', 'iris out':'ㅇ', 'lsd':'ㅇ', 'edm':'ㅇ',
-      'believe':'ㅂ', 'begin':'ㅂ', 'itsthattime':'ㅇ', 'it\'s that time':'ㅇ', 'its that time':'ㅇ',
-      'hmg':'ㅇ', 'ybxl':'ㅇ', 'bbinnss':'ㅂ', 'vip':'ㅂ', 'vip8':'ㅂ', 'no.7':'ㄴ',
-      'atmosphere':'ㅇ', 'zozo20':'ㅈ', 'bootyloose':'ㅂ', 'booty loose':'ㅂ', 'js2':'ㅈ',
-      '#iceland':'ㅇ', 'iceland':'ㅇ', 'gan.d.iamon':'ㄱ', 'gandamon':'ㄱ', 'lead-off':'ㄹ',
-      'leadoff':'ㄹ', '#naga':'ㄴ', 'naga':'ㄴ', 'sk-2':'ㅅ', 'sk2':'ㅅ', 'lord':'ㄹ',
-      'bisupolo':'ㅂ', 'that\'s ok':'ㄷ', 'thatsok':'ㄷ', 'starwalkin':'ㅅ', 'bionano':'ㅂ',
-      'vvip':'ㅂ', 'god':'ㄱ', 'rude':'ㄹ', 'whistle':'ㅇ', 'earthquake':'ㅇ', 'xox':'ㅇ',
-      'bassdownlow':'ㅂ', 'bass down low':'ㅂ', 'meow':'ㅁ', 'hot':'ㅎ', 'body':'ㅂ',
-      'one more time':'ㅇ', 'onemoreime':'ㅇ', 'onemoretimе':'ㅇ', 'overdrive':'ㅇ',
-      'likejennie':'ㄹ', 'up':'ㅇ', 'hotel party':'ㅎ', 'hotelparty':'ㅎ', 'lalalilala':'ㄹ',
-      'atakin777':'ㅇ', 'ataking777':'ㅇ', 'realmaestro':'ㄹ', 'it\'s me':'ㅇ', 'itsme':'ㅇ',
-      'where u at':'ㅇ', 'whereuatk':'ㅇ', 'wicked':'ㅇ', 'spaghetti':'ㅅ', 'slap':'ㅅ',
-      'rain':'ㄹ', 'bdd':'ㅂ', 'sonics':'ㅅ', 'supermaxggas':'ㅅ', 'the chase':'ㄷ',
-      'dirtywork':'ㄷ', 'dirty work':'ㄷ', 'candythief':'ㅋ', 'forgive':'ㅍ',
-      'yxl let\'s go':'ㅇ', 'yxlletsgo':'ㅇ', 'without u':'ㅇ', 'withoutu':'ㅇ',
-      'daisy':'ㄷ', 'god is a girl':'ㄱ', 'godisagirl':'ㄱ', 'bangbeop':'ㅂ',
-      'dotori':'ㄷ', 'moncler':'ㅁ', 'supermgas':'ㅅ', 'rhslwlsl':'ㄱ',
+      'a':'ㅇ','holdup':'ㅎ','thatsnono':'ㄷ','thatsok':'ㄷ',
+      'swing':'ㅅ','love':'ㄹ','goodbye':'ㄱ','redred':'ㄹ',
+      'sexyfood':'ㅅ','irisout':'ㅇ','lsd':'ㅇ','edm':'ㅇ',
+      'believe':'ㅂ','begin':'ㅂ','itsthattime':'ㅇ','itsme':'ㅇ',
+      'hmg':'ㅇ','ybxl':'ㅇ','bbinnss':'ㅂ','vip':'ㅂ','vip8':'ㅂ',
+      'no7':'ㄴ','atmosphere':'ㅇ','zozo20':'ㅈ','bootyloose':'ㅂ',
+      'js2':'ㅈ','iceland':'ㅇ','gandiamond':'ㄱ','leadoff':'ㄹ',
+      'naga':'ㄴ','sk2':'ㅅ','lord':'ㄹ','bisupolo':'ㅂ',
+      'starwalkin':'ㅅ','bionano':'ㅂ','vvip':'ㅂ','god':'ㄱ',
+      'rude':'ㄹ','whistle':'ㅇ','earthquake':'ㅇ','xox':'ㅇ',
+      'bassdownlow':'ㅂ','meow':'ㅁ','hot':'ㅎ','body':'ㅂ',
+      'onemoreime':'ㅇ','onemoretim':'ㅇ','overdrive':'ㅇ',
+      'likejennie':'ㄹ','up':'ㅇ','hotelparty':'ㅎ','lalalilala':'ㄹ',
+      'atakin777':'ㅇ','ataking777':'ㅇ','realmaestro':'ㄹ',
+      'whereuatk':'ㅇ','wicked':'ㅇ','spaghetti':'ㅅ','slap':'ㅅ',
+      'rain':'ㄹ','bdd':'ㅂ','sonics':'ㅅ','supermaxggas':'ㅅ',
+      'thechase':'ㄷ','dirtywork':'ㄷ','candythief':'ㅋ','forgive':'ㅍ',
+      'yxlletsgo':'ㅇ','withoutu':'ㅇ','daisy':'ㄷ',
+      'godisagirl':'ㄱ','bangbeop':'ㅂ','dotori':'ㄷ','moncler':'ㅁ',
+      'supermgas':'ㅅ','rhslwlsl':'ㄱ','goodmorning':'ㄱ',
     };
 
-    function normalize(str) {
-      return str.toLowerCase().replace(/[^a-z0-9]/g, '');
-    }
+    function norm(str) { return str.toLowerCase().replace(/[^a-z0-9]/g, ''); }
 
     function stripPrefix(text) {
       if (PREFIX_EXCEPTIONS.includes(text)) return text;
@@ -711,74 +709,50 @@
       return text;
     }
 
-    function getKoreanChosung(str) {
-      let result = '';
+    function getChosung(str) {
+      let r = '';
       for (const ch of str) {
-        const code = ch.charCodeAt(0);
-        if (code >= 0xAC00 && code <= 0xD7A3) result += CHOSUNG[Math.floor((code - 0xAC00) / 588)];
+        const c = ch.charCodeAt(0);
+        if (c >= 0xAC00 && c <= 0xD7A3) r += CHOSUNG[Math.floor((c - 0xAC00) / 588)];
       }
-      return result;
+      return r;
     }
 
-    function isOnlyJamo(str) {
-      return str.length > 0 && [...str].every(ch => ch >= 'ㄱ' && ch <= 'ㅎ');
+    function isJamo(str) {
+      return str.length > 0 && [...str].every(ch => ch >= '\u3131' && ch <= '\u314E');
     }
 
-    function getEngChosung(text) {
-      const t = text.toLowerCase().trim();
-      if (ENG_MAP[t]) return ENG_MAP[t];
-      const n = normalize(t);
-      for (const [key, cs] of Object.entries(ENG_MAP)) {
-        if (normalize(key) === n) return cs;
-      }
-      return null;
-    }
-
-    function matches(text, keyword) {
-      if (text.includes(keyword)) return true;
-      if (!isOnlyJamo(keyword)) return false;
+    function matches(text, kw) {
+      if (text.includes(kw)) return true;
+      if (!isJamo(kw)) return false;
       const eff = stripPrefix(text);
-      // 한글 초성 추출
-      const cs = getKoreanChosung(eff);
-      if (cs.length > 0) return cs.startsWith(keyword);
-      // 한글 없는 경우 ENG_MAP으로 폴백
-      const engCs = getEngChosung(eff);
-      if (engCs) return engCs.startsWith(keyword);
+      const cs = getChosung(eff);
+      if (cs.length > 0) return cs.startsWith(kw);
+      // 한글 없는 영어 제목 → ENG_MAP 폴백
+      const key = norm(eff);
+      const mapped = ENG_MAP[key];
+      if (mapped) return mapped.startsWith(kw);
       return false;
     }
 
-    function setCount(total, visible, keyword) {
-      if (!keyword) {
-        countText.textContent = `총 ${total}개의 곡`;
-      } else {
-        countText.textContent = `검색 결과 ${visible}개 / 총 ${total}개`;
-      }
+    function setCount(total, visible, kw) {
+      countText.textContent = kw ? `검색 결과 ${visible}개 / 총 ${total}개` : `총 ${total}개의 곡`;
     }
 
     function filterSongs() {
-      const keyword = input.value.trim().toLowerCase();
-      let visibleCount = 0;
-
+      const kw = input.value.trim().toLowerCase();
+      let n = 0;
       for (let i = 1; i < rows.length; i++) {
-        const numberCell = rows[i].cells[0];
-        const excelCell  = rows[i].cells[1];
-        const titleCell  = rows[i].cells[2];
-        if (!numberCell || !excelCell || !titleCell) continue;
-
-        const number = numberCell.textContent.toLowerCase();
-        const excel  = excelCell.textContent.toLowerCase();
-        const title  = titleCell.textContent.toLowerCase();
-
-        if (keyword === '' || matches(number, keyword) || matches(excel, keyword) || matches(title, keyword)) {
-          rows[i].style.display = '';
-          visibleCount++;
-        } else {
-          rows[i].style.display = 'none';
-        }
+        const c0 = rows[i].cells[0], c1 = rows[i].cells[1], c2 = rows[i].cells[2];
+        if (!c0 || !c1 || !c2) continue;
+        const show = kw === '' ||
+          matches(c0.textContent.toLowerCase(), kw) ||
+          matches(c1.textContent.toLowerCase(), kw) ||
+          matches(c2.textContent.toLowerCase(), kw);
+        rows[i].style.display = show ? '' : 'none';
+        if (show) n++;
       }
-
-      const total = rows.length - 1;
-      setCount(total, visibleCount, keyword);
+      setCount(rows.length - 1, n, kw);
     }
 
     setCount(rows.length - 1, rows.length - 1, '');
