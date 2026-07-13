@@ -1,42 +1,44 @@
 <!-- 리캡 섹션 시작 -->
-<div class="recap-section" style="max-width: 600px; margin: 20px auto; padding: 30px; border: 1px solid #ddd; border-radius: 20px; text-align: center; background-color: #f9f9f9;">
+<div class="recap-section" style="max-width: 600px; margin: 40px auto; padding: 30px; border: 2px solid #e0e0e0; border-radius: 20px; text-align: center; background-color: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
     
-    <h2 style="color: #333; margin-bottom: 20px;">🚨 SOOP 리캡 이용 방법</h2>
+    <h2 style="color: #333; margin-bottom: 25px;">🚨 SOOP 리캡 이용 방법</h2>
     
     <!-- 1. 리캡 전체 가이드 이미지 -->
-    <div style="margin-bottom: 25px;">
+    <div style="margin-bottom: 30px;">
         <img src="recap-guide.png" alt="리캡 전체 가이드" style="width: 100%; max-width: 500px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     </div>
 
-    <!-- 2. 단계별 텍스트 설명 -->
-    <div style="text-align: left; font-size: 15px; color: #555; margin-bottom: 25px; line-height: 1.6;">
-        <p>1. 아래 <b>[🚀 리캡 시작하기]</b> 버튼을 누르면 코드가 자동으로 복사됩니다.</p>
-        <p>2. 새 탭으로 열리는 SOOP 통계 페이지의 <b>주소창</b>을 클릭하세요.</p>
-        <p>3. 복사한 코드를 <b>[붙여넣기]</b> 하세요.</p>
-        
-        <!-- 붙여넣기 상세 이미지 -->
-        <div style="margin: 15px 0; text-align: center;">
-            <img src="recap_paste.png" alt="붙여넣기 상세 이미지" style="width: 100%; max-width: 400px; border-radius: 8px; border: 1px solid #ccc;">
-        </div>
+    <!-- 2. 코드 강조 박스 (복사용) -->
+    <div style="background-color: #282c34; color: #61dafb; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 14px; text-align: left; overflow-x: auto; margin-bottom: 20px; border: 1px solid #444;">
+        <code id="recap-code" style="word-break: break-all;">
+            javascript:!function(){let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/jebibot/sp-recap/mobile.js',document.head.appendChild(s)}();
+        </code>
+    </div>
 
-        <p style="color: #e63946; font-weight: bold; margin-top: 10px;">
-            4. 중요: 붙여넣으면 'javascript:'가 사라질 수 있습니다! 맨 앞에 직접 <b>javascript:</b>를 입력하고 엔터를 누르세요.
+    <!-- 3. 단계별 텍스트 설명 -->
+    <div style="text-align: left; font-size: 16px; color: #444; margin-bottom: 30px; line-height: 1.8;">
+        <p>1. 위 <b>코드 박스</b>를 클릭하거나 아래 버튼을 누르면 코드가 복사됩니다.</p>
+        <p>2. 새 탭으로 열리는 SOOP 통계 페이지의 <b>주소창</b>을 클릭하세요.</p>
+        <p>3. <b>[붙여넣기]</b> 후 엔터를 누르면 리캡이 실행됩니다.</p>
+        
+        <p style="color: #e63946; font-weight: bold; margin-top: 15px; font-size: 15px;">
+            ⚠️ 중요: 붙여넣으면 'javascript:'가 사라질 수 있습니다!<br>
+            맨 앞에 직접 <b>javascript:</b>가 있는지 꼭 확인하고 엔터를 누르세요!
         </p>
     </div>
 
-    <!-- 3. 실행 버튼 -->
-    <button onclick="startRecap()" style="padding: 15px 30px; font-size: 18px; font-weight: bold; cursor: pointer; background-color: #4b7bec; color: white; border: none; border-radius: 10px; transition: 0.3s; width: 100%;">
-        🚀 리캡 시작하기 (클릭 시 자동 복사 및 이동)
+    <!-- 4. 실행 버튼 -->
+    <button onclick="copyAndOpen()" style="padding: 18px; font-size: 18px; font-weight: bold; cursor: pointer; background-color: #4b7bec; color: white; border: none; border-radius: 12px; transition: 0.3s; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+        🚀 코드 복사하고 SOOP 통계 가기
     </button>
 </div>
 
 <script>
-function startRecap() {
-    const code = "!function(){let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/jebibot/sp-recap/mobile.js',document.head.appendChild(s)}();";
-    const fullCode = "javascript:" + code;
-
-    navigator.clipboard.writeText(fullCode).then(() => {
-        alert("코드가 복사되었습니다! 새 창의 주소창에 붙여넣고 엔터를 누르세요.");
+function copyAndOpen() {
+    const code = "javascript:!function(){let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/jebibot/sp-recap/mobile.js',document.head.appendChild(s)}();";
+    
+    navigator.clipboard.writeText(code).then(() => {
+        alert("코드가 복사되었습니다! 이동한 페이지 주소창에 붙여넣기(Ctrl+V) 하세요.");
         window.open("https://m.sooplive.com/statistics/a/watch/?szModule=UserLiveWatchTimeData&szMethod=watch", "_blank");
     });
 }
