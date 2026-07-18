@@ -1,11 +1,58 @@
-<div class="video-center-wrapper">
-  <div class="video-aspect-ratio-box">
-    <iframe 
-      src="https://www.youtube.com/embed/Twc3twPg7U0" 
-       title="YB 시그모음 [6/18]" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      allowfullscreen>
-    </iframe>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YB 시그모음</title>
+  
+  <style>
+    /* 1. 웹브라우저 기본 여백을 없앱니다 */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black; /* 배경을 검은색으로 채워 몰입감을 높입니다 */
+      overflow: hidden; /* 스크롤바가 생기지 않도록 숨깁니다 */
+    }
+
+    /* 2. 화면 전체를 채우고, 자식 요소를 정중앙에 배치합니다 */
+    .video-center-wrapper {
+      display: flex;
+      justify-content: center; /* 가로 기준 중앙 정렬 */
+      align-items: center;    /* 세로 기준 중앙 정렬 */
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* 3. 유튜브의 16:9 화면 비율을 완벽하게 유지하면서 화면을 꽉 채웁니다 */
+    .video-aspect-ratio-box {
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 16 / 9; /* 16:9 비율 고정 */
+    }
+
+    /* 4. 박스 내부에서 플레이어가 꽉 차도록 설정합니다 */
+    .video-aspect-ratio-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none; /* 테두리 제거 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 작성하신 HTML 코드가 이 아래에 들어옵니다 -->
+  <div class="video-center-wrapper">
+    <div class="video-aspect-ratio-box">
+      <iframe 
+        src="https://www.youtube.com/embed/Twc3twPg7U0" 
+        title="YB 시그모음 [6/18]" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+      </iframe>
+    </div>
   </div>
-</div>
+
+</body>
+</html>
