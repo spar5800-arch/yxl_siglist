@@ -1,58 +1,39 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YB 시그모음</title>
-  
-  <style>
-    /* 1. 웹브라우저 기본 여백을 없앱니다 */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: black; /* 배경을 검은색으로 채워 몰입감을 높입니다 */
-      overflow: hidden; /* 스크롤바가 생기지 않도록 숨깁니다 */
-    }
+<style>
+  /* 부모 컨테이너: 본문 너비에 맞추고 정중앙 정렬 */
+  .custom-video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto; /* 가로 정중앙 정렬 */
+    background-color: #000; /* 영상 양옆 여백을 검은색으로 */
+  }
 
-    /* 2. 화면 전체를 채우고, 자식 요소를 정중앙에 배치합니다 */
-    .video-center-wrapper {
-      display: flex;
-      justify-content: center; /* 가로 기준 중앙 정렬 */
-      align-items: center;    /* 세로 기준 중앙 정렬 */
-      width: 100vw;
-      height: 100vh;
-    }
+  /* 반응형 16:9 박스 */
+  .custom-video-box {
+    width: 100%;
+    /* 위아래 높이를 화면(메뉴바 제외)에 꽉 채우고 싶다면 아래 속성을 씁니다 */
+    height: calc(100vh - 60px); /* 60px은 대략 상단 메뉴바 높이입니다. 상황에 맞게 조절 가능 */
+    max-height: 100%;
+  }
 
-    /* 3. 유튜브의 16:9 화면 비율을 완벽하게 유지하면서 화면을 꽉 채웁니다 */
-    .video-aspect-ratio-box {
-      width: 100%;
-      max-width: 100%;
-      aspect-ratio: 16 / 9; /* 16:9 비율 고정 */
-    }
+  /* iframe 스타일 */
+  .custom-video-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover; /* 영상을 꽉 채우도록 설정 */
+  }
+</style>
 
-    /* 4. 박스 내부에서 플레이어가 꽉 차도록 설정합니다 */
-    .video-aspect-ratio-box iframe {
-      width: 100%;
-      height: 100%;
-      border: none; /* 테두리 제거 */
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 작성하신 HTML 코드가 이 아래에 들어옵니다 -->
-  <div class="video-center-wrapper">
-    <div class="video-aspect-ratio-box">
-      <iframe 
-        src="https://www.youtube.com/embed/Twc3twPg7U0" 
-        title="YB 시그모음 [6/18]" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen>
-      </iframe>
-    </div>
+<div class="custom-video-container">
+  <div class="custom-video-box">
+    <iframe 
+      src="https://www.youtube.com/embed/Twc3twPg7U0" 
+      title="YB 시그모음 [6/18]" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>
   </div>
-
-</body>
-</html>
+</div>
